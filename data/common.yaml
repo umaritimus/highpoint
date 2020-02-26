@@ -1,0 +1,6 @@
+---
+highpoint::packages :
+    - '//share/HPT_COMMON_v20.1.2.zip'
+    - '//share/HPT_ISCRIPT_COMMON_v19.4.0.zip'
+    - '//share/HPT_SCHEDULE_BUILDER_v20.1.2.zip'
+    - '//share/HPT_DEGREE_PLANNER_v20.1.2.zip'
