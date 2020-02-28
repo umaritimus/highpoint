@@ -20,10 +20,6 @@ class highpoint (
 
     if (!empty($packages) and ($ensure == 'present')) {
 
-      file { "${ps_config_home}/class" :
-        ensure => directory,
-      }
-
       $packages.each | Integer $index, String $package | {
 
         $pkgtemp = regsubst("${::env_temp}/${index}", '(/|\\\\)', '\\', 'G')
