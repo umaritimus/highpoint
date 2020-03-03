@@ -52,9 +52,34 @@ class highpoint (
         exec { "Deploy ${pkgtemp}/*/java/app/*" :
           command   => Sensitive(@("EOT")),
               Try {
+                If (
+                  $(
+                    Try {
+                      Test-Path `
+                        -Path ${regsubst("\'${ps_config_home}/class\'", '(/|\\\\)', '\\', 'G')} `
+                        -Type Leaf `
+                        -ErrorAction Stop
+                    } Catch { 0 }
+                  ) 
+                ) {
+                  Remove-Item -Path ${regsubst("\'${ps_config_home}/class\'", '(/|\\\\)', '\\', 'G')} | Out-Null
+                }
+
+                If ( -not
+                  $(
+                    Try {
+                      Test-Path `
+                        -Path ${regsubst("\'${ps_config_home}/class\'", '(/|\\\\)', '\\', 'G')} `
+                        -Type Container `
+                        -ErrorAction Stop
+                    } Catch { 0 }
+                  ) 
+                ) {
+                  New-Item -Path ${regsubst("\'${ps_config_home}/class\'", '(/|\\\\)', '\\', 'G')} -Type Directory | Out-Null
+                }
                 Copy-Item `
                   -Path ${regsubst("\'${pkgtemp}/*/java/app/*\'", '(/|\\\\)', '\\', 'G')} `
-                  -Destination ${regsubst("\'${ps_config_home}/class\'", '(/|\\\\)', '\\', 'G')} `
+                  -Destination ${regsubst("\'${ps_config_home}/class/\'", '(/|\\\\)', '\\', 'G')} `
                   -Force `
                   -ErrorAction Stop
               } Catch {
@@ -63,7 +88,7 @@ class highpoint (
             |-EOT
           provider  => powershell,
           logoutput => true,
-          require   => [ Exec["Expand ${package} to ${pkgtemp}"], File["${ps_config_home}/class"] ],
+          require   => [ Exec["Expand ${package} to ${pkgtemp}"] ],
         }
 
         exec { "Delete ${pkgtemp} Directory" :
