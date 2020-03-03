@@ -12,7 +12,7 @@
 # @example
 #   include highpoint
 class highpoint (
-  Enum['present','absent']    $ensure         = 'present',
+  Enum['present','absent']    $ensure         = 'absent',
   Optional[Array[String[1]]]  $packages       = undef,
   String[1]                   $ps_config_home = lookup('ps_config_home'),
 ) {
