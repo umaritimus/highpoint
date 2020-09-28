@@ -91,6 +91,16 @@ class highpoint (
           require   => [ Exec["Expand ${package} to ${pkgtemp}"] ],
         }
 
+        exec { "Delete Duplicate '${package}' classes" :
+          command   => "
+              ${file('highpoint/highpoint.psm1')}
+              Remove-OlderDuplicates -Path ${regsubst("\'${ps_config_home}/class/\'", '(/|\\\\)', '\\', 'G')}
+            ",
+          provider  => powershell,
+          logoutput => true,
+          require   => [ Exec["Deploy ${pkgtemp}/*/java/app/*"] ],
+        }
+
         exec { "Delete ${pkgtemp} Directory" :
           command   =>  Sensitive(@("EOT")),
               New-Item -Path ${regsubst("\'${::env_temp}/empty\'", '(/|\\\\)', '\\', 'G')} -Type Directory -Force
