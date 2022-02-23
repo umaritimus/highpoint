@@ -49,7 +49,7 @@ class highpoint (
           require   => [ Exec["Check ${package}"] ],
         }
 
-        exec { "Deploy ${pkgtemp}/*/java/app/*" :
+        exec { "Deploy ${pkgtemp}/HPT_BUNDLE/class/*" :
           command   => Sensitive(@("EOT")),
               Try {
                 If (
@@ -78,7 +78,7 @@ class highpoint (
                   New-Item -Path ${regsubst("\'${ps_config_home}/class\'", '(/|\\\\)', '\\', 'G')} -Type Directory | Out-Null
                 }
                 Copy-Item `
-                  -Path ${regsubst("\'${pkgtemp}/*/java/app/*\'", '(/|\\\\)', '\\', 'G')} `
+                  -Path ${regsubst("\'${pkgtemp}/HPT_BUNDLE/class/*\'", '(/|\\\\)', '\\', 'G')} `
                   -Destination ${regsubst("\'${ps_config_home}/class/\'", '(/|\\\\)', '\\', 'G')} `
                   -Force `
                   -ErrorAction Stop
@@ -98,7 +98,7 @@ class highpoint (
             ",
           provider  => powershell,
           logoutput => true,
-          require   => [ Exec["Deploy ${pkgtemp}/*/java/app/*"] ],
+          require   => [ Exec["Deploy ${pkgtemp}/HPT_BUNDLE/class/*"] ],
         }
 
         exec { "Delete ${pkgtemp} Directory" :
@@ -119,7 +119,7 @@ class highpoint (
             |-EOT
           provider  => powershell,
           logoutput => true,
-          require   => [ Exec["Deploy ${pkgtemp}/*/java/app/*"] ],
+          require   => [ Exec["Deploy ${pkgtemp}/HPT_BUNDLE/class/*"] ],
         }
 
       }

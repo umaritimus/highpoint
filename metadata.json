@@ -1,6 +1,6 @@
 {
   "name": "umaritimus-highpoint",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "author": "umaritimus",
   "summary": "Puppet module for deploying highpoint class files",
   "license": "MIT",
